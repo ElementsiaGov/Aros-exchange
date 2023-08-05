@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aros Stock Exchange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            background-color: #f2f2f2;
+            background-image: url("https://www.nationstates.net/images/flags/uploads/rflags/aros_elyium__770018.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center bottom;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .exchange-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .currency-option {
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+        }
+
+        .currency-option label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .currency-option select,
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            width: 100%;
+            padding: 8px 16px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .result-container {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .result-container p {
+            margin: 5px 0;
+            color: #444;
+        }
+
+        /* Media Query for Mobile Devices */
+        @media only screen and (max-width: 480px) {
+            .container {
+                max-width: 300px;
+            }
+            .exchange-container {
+                grid-template-columns: 1fr;
+            }
+            .currency-option,
+            button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aros Stock Exchange</h1>
+
+        <div class="exchange-container">
+            <div class="currency-option">
+                <label for="from-currency">From Currency:</label>
+                <select id="from-currency"></select>
+            </div>
+
+            <div class="currency-option">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" step="0.01">
+            </div>
+
+            <div class="currency-option">
+                <label for="to-currency">To Currency:</label>
+                <select id="to-currency"></select>
+            </div>
+        </div>
+
+        <button onclick="convertCurrency()">Convert</button>
+
+        <div class="result-container">
+            <p><span id="amount-in-from-currency"></span> <span id="from-currency-code"></span> is equivalent to:</p>
+            <p><span id="amount-in-to-currency"></span> <span id="to-currency-code"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const exchangeRates = {
+            "Imperial Kira": 1.52,
+            "Kimhar": 1.08,
+            "Euro": 1.50,
+            "Leu": 1.46,
+            "Krona": 1.57,
+            "Frontier Dollar": 1.28,
+            "Poem": 1.38,
+            "Florin": 0.75,
+            "Kalmaric Pond": 0.45,
+        };
+
+        function convertCurrency() {
+            const dollarAmount = parseFloat(document.getElementById('amount').value);
+            if (isNaN(dollarAmount)) {
+                alert("Please enter a valid number.");
+                return;
+            }
+
+            const fromCurrency = document.getElementById('from-currency').value;
+            const toCurrency = document.getElementById('to-currency').value;
+            const exchangeRateFrom = exchangeRates[fromCurrency];
+            const exchangeRateTo = exchangeRates[toCurrency];
+
+            if (!exchangeRateFrom || !exchangeRateTo) {
+                alert("Please select valid currencies.");
+                return;
+            }
+
+            const amountInFromCurrency = (dollarAmount / exchangeRateFrom).toFixed(2);
+            const amountInToCurrency = (dollarAmount * exchangeRateTo).toFixed(2);
+
+            document.getElementById('amount-in-from-currency').textContent = dollarAmount;
+            document.getElementById('from-currency-code').textContent = fromCurrency;
+            document.getElementById('amount-in-to-currency').textContent = amountInToCurrency;
+            document.getElementById('to-currency-code').textContent = toCurrency;
+        }
+
+        // Populate the currency dropdowns
+        function populateCurrencyDropdowns() {
+            const fromCurrencyDropdown = document.getElementById('from-currency');
+            const toCurrencyDropdown = document.getElementById('to-currency');
+
+            for (const currency in exchangeRates) {
+                const option1 = document.createElement('option');
+                option1.value = currency;
+                option1.textContent = currency + ' (' + currency + ')';
+                fromCurrencyDropdown.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.value = currency;
+                option2.textContent = currency + ' (' + currency + ')';
+                toCurrencyDropdown.appendChild(option2);
+            }
+        }
+
+        // Calculate and display how much 1 Euro is equivalent to in other currencies
+        function calculateEuroEquivalent() {
+            const euroExchangeRate = exchangeRates["Euro"];
+            const euroEquivalent = (1 / euroExchangeRate).toFixed(2);
+
+            document.getElementById('amount-in-from-currency').textContent = 1;
+            document.getElementById('from-currency-code').textContent = "Euro";
+            document.getElementById('amount-in-to-currency').textContent = euroEquivalent;
+            document.getElementById('to-currency-code').textContent = "Dollars";
+        }
+
+        // Run the code after the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCurrencyDropdowns();
+            // Call the currency conversion function initially (optional)
+            convertCurrency();
+            // Calculate and display how much 1 Euro is equivalent to in other currencies
+            calculateEuroEquivalent();
+        });
+    </script>
+</body>
+</html>

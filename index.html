@@ -15,7 +15,7 @@
             background-color: #f2f2f2;
             background-image: url("https://www.nationstates.net/images/flags/uploads/rflags/aros_elyium__770018.png");
             background-repeat: no-repeat;
-            background-size: contain;
+            background-size: cover; /* Updated to cover entire viewport */
             background-position: center bottom;
         }
 
@@ -81,6 +81,18 @@
             color: #444;
         }
 
+        /* Dark blue bar for credits */
+        .credits-bar {
+            background-color: #1c2a4d;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
         /* Media Query for Mobile Devices */
         @media only screen and (max-width: 480px) {
             .container {
@@ -136,6 +148,8 @@
             "Poem": 1.38,
             "Florin": 0.75,
             "Kalmaric Pond": 0.45,
+            "Densian Leu": 0.69,
+            "Wywmonis": 0.98,
         };
 
         function convertCurrency() {
@@ -155,7 +169,7 @@
                 return;
             }
 
-            const amountInFromCurrency = (dollarAmount / exchangeRateFrom).toFixed(2);
+            const amountInFromCurrency = (dollarAmount * exchangeRateFrom).toFixed(2);
             const amountInToCurrency = (dollarAmount * exchangeRateTo).toFixed(2);
 
             document.getElementById('amount-in-from-currency').textContent = dollarAmount;
@@ -172,35 +186,27 @@
             for (const currency in exchangeRates) {
                 const option1 = document.createElement('option');
                 option1.value = currency;
-                option1.textContent = currency + ' (' + currency + ')';
+                option1.textContent = currency + ' (' + exchangeRates[currency] + ')';
                 fromCurrencyDropdown.appendChild(option1);
 
                 const option2 = document.createElement('option');
                 option2.value = currency;
-                option2.textContent = currency + ' (' + currency + ')';
+                option2.textContent = currency + ' (' + exchangeRates[currency] + ')';
                 toCurrencyDropdown.appendChild(option2);
             }
-        }
-
-        // Calculate and display how much 1 Euro is equivalent to in other currencies
-        function calculateEuroEquivalent() {
-            const euroExchangeRate = exchangeRates["Euro"];
-            const euroEquivalent = (1 / euroExchangeRate).toFixed(2);
-
-            document.getElementById('amount-in-from-currency').textContent = 1;
-            document.getElementById('from-currency-code').textContent = "Euro";
-            document.getElementById('amount-in-to-currency').textContent = euroEquivalent;
-            document.getElementById('to-currency-code').textContent = "Dollars";
         }
 
         // Run the code after the page is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             populateCurrencyDropdowns();
-            // Call the currency conversion function initially (optional)
-            convertCurrency();
-            // Calculate and display how much 1 Euro is equivalent to in other currencies
-            calculateEuroEquivalent();
         });
     </script>
+
+    <!-- Dark blue bar for credits -->
+    <div class="credits-bar">
+        <p>&copy; 2023 Aros Stock Exchange. All rights reserved.</p>
+        <p>Credits: Website designed by Elementsia.</p>
+    </div>
+
 </body>
 </html>

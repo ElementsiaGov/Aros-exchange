@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +16,7 @@
             background-color: #f2f2f2;
             background-image: url("https://www.nationstates.net/images/flags/uploads/rflags/aros_elyium__770018.png");
             background-repeat: no-repeat;
-            background-size: cover; /* Updated to cover entire viewport */
-            background-position: center bottom;
+            background-size: cover;
         }
 
         .container {
@@ -81,12 +81,11 @@
             color: #444;
         }
 
-        /* Dark blue bar for credits */
         .credits-bar {
-            background-color: #1c2a4d;
+            background-color: #002e5d;
             color: #fff;
             text-align: center;
-            padding: 10px 0;
+            padding: 10px;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -108,6 +107,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Aros Stock Exchange</h1>
@@ -125,7 +125,9 @@
 
             <div class="currency-option">
                 <label for="to-currency">To Currency:</label>
-                <select id="to-currency"></select>
+                <select id="to-currency">
+                    <option value="AIU">AIU (Aros Internation unit)</option>
+                </select>
             </div>
         </div>
 
@@ -133,23 +135,69 @@
 
         <div class="result-container">
             <p><span id="amount-in-from-currency"></span> <span id="from-currency-code"></span> is equivalent to:</p>
-            <p><span id="amount-in-to-currency"></span> <span id="to-currency-code"></span></p>
+            <p><span id="amount-in-to-currency"></span> <span id="to-currency-code">AIU</span></p>
         </div>
+    </div>
+
+    <div class="credits-bar">
+        <p>&copy; 2023 Aros Stock Exchange | All rights reserved | Credits to Elementsia</p>
     </div>
 
     <script>
         const exchangeRates = {
-            "Imperial Kira": 1.52,
-            "Kimhar":  0.92,
-            "Euro": 0.64,
-            "Leu": 1.46,
-            "Krona": 1.57,
-            "Frontier Dollar": 1.28,
-            "Poem": 1.38,
-            "Florin": 1.60,
-            "Kalmaric Pond": 0.45,
-            "Densian Leu": 0.69,
-            "Wywmonis": 0.98,
+            "Galactic Federation of Odinburgh": 1.45,
+            "Federation of Puokk and Vwue": 1.09,
+            "Nationale Republik of New Nationale Einheit": 1.39,
+            "Free Cities of The Interplanetary Trade Coalition": 0.67,
+            "Federation of Krimera": 1.35,
+            "L??r??issamband of The European Emmirates": 1.57,
+            
+            "Federative State Union of Cordonshur": 1.5,
+            "Most Serene Republic of Pangurstan": 1.34,
+            "Technocratic State of Greater Jes New Islands": 1.18,
+            
+            "S̴̤̹̮̪̾̿͂̽͝ͅI̵͓̫̠̊̆̈V̷̦̙͆̍A̸ of Straona": 1.3,
+            "Syndicate States of Rantarod": 1.49,
+            "Serene Empire of Roylaii": 1.68,
+           
+           
+            "Imperial State of Gympieland": 0.91,
+            "Reorganized-Confederation of Kreigswaffe": 1.46,
+            "Imperial Confederation of Grand Rotondia": 1.52,
+            "Constitutional Latin Craidom of Denis Pavel": 1.46,
+            "Eternal Kingdom of Akagura": 1.02,
+            "Frontier Republic of Kartof": 1.28,
+            "The Empire of Romanic Imperium": 1.64,
+            "Kingdom of Lamplight": 1.38,
+            "Red Republic of Isomedia": 1.47,
+            "Serene Empire of De Orianne": 1.5,
+            "Free Land of EROTIC VCR": 0.84,
+            "Confederation of Minuvano": 1.33,
+            "United Socialist States of Democratic Hols Cavka": 1.27,
+            "Peran Isles of Calicadonia": 0.67,
+            "Twin Colonies of Isomedia Minor": 0.57,
+            "Serene Dual-Crowned Republic of Sachiko": 1.57,
+         
+            "Republic of The Outer Rim": 0.23,
+ 
+            "Empire of Fraternat": 0.75,
+
+
+
+
+            "Kingdom of Elementsia-RFE-": 1.08,
+          
+        
+            "Republic of Hakkra": 0.09,
+           
+            "Regnae of Nambiadia": 1.4,
+           
+            "People's Republic of Kalisau": 0.03,
+            "Republic of Neue WaffenWaffenWaffle": 0.18,
+            "Community of Aros Development Bank": 0.14,
+           
+            "Kingdom of Western Lamplight": 0.02,
+           
         };
 
         function convertCurrency() {
@@ -160,53 +208,38 @@
             }
 
             const fromCurrency = document.getElementById('from-currency').value;
-            const toCurrency = document.getElementById('to-currency').value;
-            const exchangeRateFrom = exchangeRates[fromCurrency];
-            const exchangeRateTo = exchangeRates[toCurrency];
+            const exchangeRate = exchangeRates[fromCurrency];
 
-            if (!exchangeRateFrom || !exchangeRateTo) {
-                alert("Please select valid currencies.");
+            if (!exchangeRate) {
+                alert("Please select a valid currency.");
                 return;
             }
 
-            const amountInFromCurrency = (dollarAmount * exchangeRateFrom).toFixed(2);
-            const amountInToCurrency = (dollarAmount * exchangeRateTo).toFixed(2);
+            const amountInDollars = dollarAmount * exchangeRate;
+            const amountInDollarsFormatted = amountInDollars.toFixed(2);
 
             document.getElementById('amount-in-from-currency').textContent = dollarAmount;
             document.getElementById('from-currency-code').textContent = fromCurrency;
-            document.getElementById('amount-in-to-currency').textContent = amountInToCurrency;
-            document.getElementById('to-currency-code').textContent = toCurrency;
+            document.getElementById('amount-in-to-currency').textContent = amountInDollarsFormatted;
         }
 
-        // Populate the currency dropdowns
-        function populateCurrencyDropdowns() {
+        // Populate the currency dropdown
+        function populateCurrencyDropdown() {
             const fromCurrencyDropdown = document.getElementById('from-currency');
-            const toCurrencyDropdown = document.getElementById('to-currency');
 
             for (const currency in exchangeRates) {
-                const option1 = document.createElement('option');
-                option1.value = currency;
-                option1.textContent = currency + ' (' + exchangeRates[currency] + ')';
-                fromCurrencyDropdown.appendChild(option1);
-
-                const option2 = document.createElement('option');
-                option2.value = currency;
-                option2.textContent = currency + ' (' + exchangeRates[currency] + ')';
-                toCurrencyDropdown.appendChild(option2);
+                const option = document.createElement('option');
+                option.value = currency;
+                option.textContent = currency;
+                fromCurrencyDropdown.appendChild(option);
             }
         }
 
         // Run the code after the page is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            populateCurrencyDropdowns();
+            populateCurrencyDropdown();
         });
     </script>
-
-    <!-- Dark blue bar for credits -->
-    <div class="credits-bar">
-        <p>&copy; 2023 Aros Stock Exchange. All rights reserved.</p>
-        <p>Credits: Website designed by Elementsia.</p>
-    </div>
-
 </body>
+
 </html>
